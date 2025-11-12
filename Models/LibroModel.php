@@ -16,7 +16,7 @@ class LibroModel {
     }
     //funcion para id usuario
     public function obtenerLibro($id){
-        $sql = "SELECT * FROM " . $this->table . "WHERE NUMERO_INVENTARIO = ?";
+        $sql = "SELECT * FROM " . $this->table . " WHERE NUMERO_INVENTARIO = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -34,10 +34,10 @@ class LibroModel {
         return false;
     }
     //funcion para editar
-    public function editarLibro($id,$titulo,$autor,$año_publicacion,$editorial,$categoria){
-        $sql ="UPDATE " . $this->table . " SET titulo = ?,autor= ?,año_publicacion = ?,editorial = ?, categoria = ?, WHERE NUMERO_INVENTARIO = ?";
+    public function actualizarLibro($id,$titulo,$autor,$año_publicacion,$editorial,$categoria){
+        $sql ="UPDATE " . $this->table . " SET titulo = ?,autor= ?,año_publicacion = ?,editorial = ?, categoria = ? WHERE NUMERO_INVENTARIO = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("ssssi", $titulo,$autor,$año_publicacion,$editorial,$categoria,$id);
+        $stmt->bind_param("sssssi", $titulo,$autor,$año_publicacion,$editorial,$categoria,$id);
         if ($stmt->execute()) {
             return true;
         }

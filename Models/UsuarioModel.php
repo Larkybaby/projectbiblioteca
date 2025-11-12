@@ -16,7 +16,7 @@ class UsuarioModel {
     }
     //funcion para id usuario
     public function obtenerUsuario($id){
-        $sql = "SELECT * FROM " . $this->table . "WHERE ID_USUARIO = ?";
+        $sql = "SELECT * FROM " . $this->table . " WHERE ID_USUARIO = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -34,7 +34,7 @@ class UsuarioModel {
         return false;
     }
     //funcion para editar
-    public function editarUsuario($id,$nombre_completo,$direccion,$numero_telefonico,$correo){
+    public function actualizarUsuario($id,$nombre_completo,$direccion,$numero_telefonico,$correo){
         $sql ="UPDATE " . $this->table . " SET nombre_completo = ?,direccion = ?,numero_telefonico = ?,correo = ? WHERE ID_USUARIO = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("ssisi", $nombre_completo, $direccion, $numero_telefonico,$correo, $id);
@@ -54,4 +54,32 @@ class UsuarioModel {
         }
         return false;
     }
+    public function actualizarTotalPrestamosUsuario($id_usuario) {
+    $sql = "UPDATE USUARIO 
+            SET total_prestamos = (
+                SELECT COUNT(*) FROM PRESTAMO WHERE id_usuario = ?
+            )
+            WHERE id_usuario = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ii", $id_usuario, $id_usuario);
+    $stmt->execute();
+}
+//actualiza si el usuario tiene un prestamo activo o no
+public function actualizarPrestamoActivoUsuario($id_usuario) {
+    $sql = "UPDATE USUARIO 
+            SET prestamos_activos = (
+                CASE 
+                    WHEN EXISTS (
+                        SELECT 1 FROM PRESTAMO 
+                        WHERE id_usuario = ? AND activo = 1
+                    ) THEN 1
+                    ELSE 0
+                END
+            )
+            WHERE id_usuario = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("ii", $id_usuario, $id_usuario);
+    $stmt->execute();
+}
+
 }

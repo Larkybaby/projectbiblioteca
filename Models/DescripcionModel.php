@@ -10,7 +10,22 @@ class DescripcionModel {
     }
     //funciones
     public function obtenerDescripciones(){
-       $sql =  "SELECT * FROM " .$this->table . " ORDER BY ID_PRESTAMO";
+       /*$sql = "SELECT d.id_descripcion, 
+                        d.nota, 
+                       l.titulo AS libro, 
+                       p.id_prestamo
+                FROM " . $this->table . " d
+                INNER JOIN libro l ON d.numero_inventario = l.numero_inventario
+                INNER JOIN prestamo p ON d.id_prestamo = p.id_prestamo
+                ORDER BY d.id_descripcion";*/
+        $sql = "SELECT d.id_descripcion, 
+             l.titulo AS titulo_libro, 
+            p.id_prestamo,
+            d.nota
+            FROM prestamo_descripcion d
+            INNER JOIN libro l ON d.numero_inventario = l.numero_inventario
+            INNER JOIN prestamo p ON d.id_prestamo = p.id_prestamo
+            ORDER BY d.id_descripcion";
        $result = $this->db->query($sql);
        return $result;
     }
@@ -24,28 +39,34 @@ class DescripcionModel {
         return $result->fetch_assoc();
     }
     //funcion para crear
-    public function crearLibro($numero_inventario,$id_prestamo){
-        $sql = "INSERT INTO " . $this->table . " (numero_inventario,id_prestamo) VALUES (?,?)";
+    public function crearDescripcion($numero_inventario,$id_prestamo,$nota){
+        $sql = "INSERT INTO " . $this->table . " (numero_inventario,id_prestamo,nota) VALUES (?,?,?)";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("ss",$numero_inventario,$id_prestamo);
+        $stmt->bind_param("iis",$numero_inventario,$id_prestamo,$nota);
         if ($stmt->execute()) {
-            return true;
+            //return true;
+            return $this->db->insert_id;
         }
         return false;
     }
     //funcion para editar
-    public function editarLibro($id,$numero_inventario,$id_prestamo){
-        $sql ="UPDATE " . $this->table . " SET numero_inventario = ?,id_prestamo = ?, WHERE ID_DESCRIPCION= ?";
+   public function editarDescripcion($id, $numero_inventario, $id_prestamo, $nota){
+        $sql ="UPDATE " . $this->table . " SET numero_inventario = ?, id_prestamo = ?, nota = ? WHERE ID_DESCRIPCION = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("iii", $numero_inventario,$id_prestamo,$id);
+        if (!$stmt) {
+            error_log("Prepare editarDescripcion failed: " . $this->db->error);
+            return false;
+        }
+        // tipos: numero_inventario (i), id_prestamo (i), nota (s), id (i)
+        $stmt->bind_param("iisi", $numero_inventario, $id_prestamo, $nota, $id);
         if ($stmt->execute()) {
             return true;
         }
         return false;
     }
     //funcion para eliminar
-    public function eliminarLibro($id){
-        $sql = "DELETE FROM " . $this->table . "WHERE id_descripcion = ?";
+    public function eliminarDescripcion($id){
+        $sql = "DELETE FROM " . $this->table . " WHERE id_descripcion = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("i", $id);
 
@@ -53,5 +74,15 @@ class DescripcionModel {
             return true;
         }
         return false;
+    }
+    //obtener listas para selects
+    public function obtenerLibros() {
+        $sql = "SELECT numero_inventario, titulo FROM libro ORDER BY titulo";
+        return $this->db->query($sql);
+
+}
+ public function obtenerPrestamos() {
+        $sql = "SELECT id_prestamo FROM prestamo ORDER BY id_prestamo";
+        return $this->db->query($sql);
     }
 }

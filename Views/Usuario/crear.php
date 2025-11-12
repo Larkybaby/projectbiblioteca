@@ -15,7 +15,7 @@ error_reporting(E_ALL);?>
     </div>
     <div class="mb-3">
         <label class="form-label">numero telefonico:</label><!--columna encargado-->
-        <input type="number" class="form-control" name="numero_telefonico" required placeholder="Ej: 47 47 48 98 47">
+        <input type="number"  class="form-control" name="numero_telefonico"  required min="1000000000" max="9999999999"  placeholder="Ej: 47 47 48 98 47">
     </div>
     <div class="mb-3">
         <label class="form-label">correo</label><!--columna encargado-->

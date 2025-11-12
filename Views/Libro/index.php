@@ -1,7 +1,7 @@
 <?php require_once __DIR__ . '/../Layouts/header.php'; ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2> Gestión de Libros</h2> <!--cambiar--> 
-    <a href="index.php?controller=LibroController&action=crear" class="btn btn-primary"> Agregar Libro</a><!--este es el boton para agregar--><!--cambiar--> 
+    <a href="index.php?controllers=LibroController&action=crear" class="btn btn-primary"> Agregar Libro</a><!--este es el boton para agregar--><!--cambiar--> 
 </div>
 
 <table class="table table-striped table-hover">
@@ -28,9 +28,9 @@
             <td><?= $Libro['editorial'] ?></td>
             <td><?= $Libro['categoria'] ?></td>
             <td><!--cambiar--> 
-                <a href="index.php?controller=LibroController&action=editar&id=<?= $Libro['id_Libro'] ?>"  
+                <a href="index.php?controllers=LibroController&action=editar&id=<?= $Libro['numero_inventario'] ?>"  
                    class="btn btn-warning btn-sm"> Editar</a><!--boton para editar-->
-                <a href="index.php?controller=LibroController&action=eliminar&id=<?= $Libro['id_Libro'] ?>"  
+                <a href="index.php?controllers=LibroController&action=eliminar&id=<?= $Libro['numero_inventario'] ?>"  
                    class="btn btn-danger btn-sm" 
                    onclick="return confirm('¿Estás seguro de eliminar este Libro?')">Eliminar :c</a><!--confirmacion  de eliminar-->
             </td>

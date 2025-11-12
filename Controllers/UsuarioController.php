@@ -40,7 +40,7 @@ class UsuarioController {//cambiar
     public function editar() {
         $id = $_GET['id'] ?? null;
         if ($id) {
-            $usuario = $this->model->obtenerUsuario($id);//cambiar
+            $usuario = $this->Models->obtenerUsuario($id);//cambiar
             require_once __DIR__ . '/../views/Usuario/editar.php';//cambiar
         } else {
             header("Location: index.php?controller=UsuarioController&action=index");//cambiar
@@ -56,10 +56,10 @@ class UsuarioController {//cambiar
             $numero_telefonico = $_POST['numero_telefonico'];
             $correo = $_POST['correo'];
 
-            if ($this->model->actualizarUsuario($id,$nombre_completo,$direccion,$numero_telefonico,$correo)) {//cambiar
-                header("Location: index.php?controller=UsuarioController&action=index&success=1");//cambiar
+            if ($this->Models->actualizarUsuario($id,$nombre_completo,$direccion,$numero_telefonico,$correo)) {//cambiar
+                header("Location: index.php?controllers=UsuarioController&action=index&success=1");//cambiar
             } else {
-                header("Location: index.php?controller=UsuarioController&action=editar&id=$id&error=1");//cambiar
+                header("Location: index.php?controllers=UsuarioController&action=editar&id=$id&error=1");//cambiar
             }
         }
     }
@@ -75,5 +75,6 @@ class UsuarioController {//cambiar
             }
         }
     }
+    
 }
 ?>

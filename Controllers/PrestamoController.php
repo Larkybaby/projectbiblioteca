@@ -11,13 +11,15 @@ class PrestamoController {//cambiar
 
     // Listar todas las facultades
     public function index() {
-        $Prestamos = $this->Models->obtenerPrestamos();//cambiar
+       // $Prestamos = $this->Models->obtenerPrestamos();//cambiar
+        $Prestamos = $this->Models->obtenerPrestamosConLibros();
+        $toplibros = $this->Models->topLibros();
         require_once __DIR__ . '/../views/Prestamo/index.php';//cambiar
     }
 
     // Mostrar formulario de creación
     public function crear() {
-        $usuario = $this->Models->obtenerUsuarios();
+        $usuarios = $this->Models->obtenerUsuariosSinP();
         require_once __DIR__ . '/../views/Prestamo/crear.php';//cambiar
     }
 
@@ -31,10 +33,15 @@ class PrestamoController {//cambiar
             $fecha_retorno = $_POST['fecha_retorno'];
             $estado = $_POST['estado'];
             $activo = $_POST['activo'];
-            if ($this->Models->crearPrestamo($id_usuario,$fecha_inicio,$fecha_esperada_retorno,$fecha_retorno,$estado,$activo)) {//cambiar
-                header("Location: index.php?controller=PrestamoController&action=index&success=1");//cambiar
+            // Obtener el ID del préstamo recién creado
+            $id = $this->Models->crearPrestamo($id_usuario, $fecha_inicio, $fecha_esperada_retorno, $fecha_retorno, $estado, $activo);
+            if ($id) {//cambiar
+                header("Location: index.php?controllers=DescripcionController&action=crear&id_prestamo=$id");
+                exit();
+                //header("Location: index.php?controllers=PrestamoController&action=index&success=1");//cambiar
             } else {
-                header("Location: index.php?controller=PrestamoController&action=crear&error=1");//cambiar
+                header("Location: index.php?controllers=PrestamoController&action=crear&error=1");//cambiar
+                exit();
             }
         }
     }
@@ -44,9 +51,10 @@ class PrestamoController {//cambiar
         $id = $_GET['id'] ?? null;
         if ($id) {
             $prestamo = $this->Models->obtenerPrestamo($id);//cambiar
+            $usuarios = $this->Models->obtenerUsuarios();
             require_once __DIR__ . '/../views/Prestamo/editar.php';//cambiar
         } else {
-            header("Location: index.php?controller=PrestamoController&action=index");//cambiar
+            header("Location: index.php?controllers=PrestamoController&action=index");//cambiar
         }
     }
 
@@ -62,9 +70,9 @@ class PrestamoController {//cambiar
             $activo = $_POST['activo'];
 
             if ($this->Models->actualizarPrestamo($id,$id_usuario,$fecha_inicio,$fecha_esperada_retorno,$fecha_retorno,$estado,$activo)) {//cambiar
-                header("Location: index.php?controller=PrestamoController&action=index&success=1");//cambiar
+                header("Location: index.php?controllers=PrestamoController&action=index&success=1");//cambiar
             } else {
-                header("Location: index.php?controller=PrestamoController&action=editar&id=$id&error=1");//cambiar
+                header("Location: index.php?controllers=PrestamoController&action=editar&id=$id&error=1");//cambiar
             }
         }
     }
@@ -74,9 +82,9 @@ class PrestamoController {//cambiar
         $id = $_GET['id'] ?? null;
         if ($id) {
             if ($this->Models->eliminarPrestamo($id)) {//cambiar
-                header("Location: index.php?controller=PrestamoController&action=index&success=1");//cambiar
+                header("Location: index.php?controllers=PrestamoController&action=index&success=1");//cambiar
             } else {
-                header("Location: index.php?controller=PrestamoController&action=index&error=1");//cambiar
+                header("Location: index.php?controllers=PrestamoController&action=index&error=1");//cambiar
             }
         }
     }

@@ -64,7 +64,7 @@ class LibroController {
             $categoria = $_POST['categoria'] ?? '';
 
             // Llamar al método correcto del modelo
-            if ($this->Models->editarLibro($id, $titulo, $autor, $año_publicacion, $editorial, $categoria)) {
+            if ($this->Models->actualizarLibro($id, $titulo, $autor, $año_publicacion, $editorial, $categoria)) {
                 header("Location: index.php?controllers=LibroController&action=index&success=1");
                 exit;
             } else {

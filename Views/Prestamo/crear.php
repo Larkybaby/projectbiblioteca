@@ -5,9 +5,10 @@
         <label class="form-label">Usuario</label>
         <select class="form-control" name="id_usuario" required>
             <option value="">Seleccionar usuario...</option>
-            <?php while ($Usuario = $Usuarios->fetch_assoc()): ?>
-                <option value="<?= $Usuario['id_usuario'] ?>">
-                    <?= $Usuario['nombre_completo'] ?> - <?= $Usuario['correo'] ?>
+            <?php while ($usuario = $usuarios->fetch_assoc()): ?>
+                <option value="<?= $usuario['id_usuario'] ?>">
+                    <?= $usuario['nombre_completo'] ?> - <?= $usuario['correo'] ?>
+                <?= htmlspecialchars($usuario['nombre_completo']) ?>
                 </option>
             <?php endwhile; ?>
         </select>
@@ -32,7 +33,7 @@
         <label class="form-label">Estado del préstamo</label>
         <select class="form-control" name="estado" required>
             <option value="">-- Seleccionar --</option>
-            <option value="activo">Activo</option>
+            <option value="vigente">vigente</option>
             <option value="devuelto">Devuelto</option>
             <option value="retrasado">Retrasado</option>
         </select>

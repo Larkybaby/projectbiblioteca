@@ -14,7 +14,7 @@
             <th>Numero telefonico</th>
             <th>correo</th>
             <th>prestamos activos</th>
-            <th>total de prestamo</th>
+            <th>total de prestamos</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -27,7 +27,7 @@
             <td><?= $Usuario['direccion'] ?></td>
             <td><?= $Usuario['numero_telefonico'] ?></td>
             <td><?= $Usuario['correo'] ?></td>
-            <td><?= $Usuario['prestamos_activos'] ?></td>
+            <td><?= $Usuario['prestamos_activos'] ? 'Sí' : 'No' ?></td>
             <td><?= $Usuario['total_prestamos'] ?></td>
             <td><!--cambiar--> 
                 <a href="index.php?controller=UsuarioController&action=editar&id=<?= $Usuario['id_usuario'] ?>"  
